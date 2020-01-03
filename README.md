@@ -10,11 +10,11 @@ I'm not very good at anagrams, so I've decided to write my own anagram solver. N
 
 * Solve one-word anagrams
 * Solve multi-word anagrams
-* Build a front end so I can do it sneaky-like.
+* Build a web front end so I can do it sneaky-like on my phone
 
 ## Intuition
 
-Any two anagrams can be compared in two sorting operations,
+Any two anagrams can be compared (slowly) in two sorting operations,
 
 ```
 acb -> abc
@@ -22,12 +22,43 @@ cba -> abc
 => acb is an anagram of cba
 ```
 
-Therefore, each dictionary word can be expressed by the following map,
+Abstracting away briefly, suppose we take map letter as a prime, 
 
 ```
-F: anagram --> word
-F(aelpp) = apple
-F(aaabnn) = banana
+primify:
+    a = 2
+    b = 3
+    c = 5
+    ...
+    z = 101
 ```
+
+And define a function
+
+```
+numberfy(word):
+	out = 1
+	for letter in word:
+		out *= primify(letter)
+```
+
+Then it's trivial to show,
+
+```
+numberfy('acb') = 30
+numberfy('cba') = 30
+OK
+```
+
+This is much quicker, and serves as a core primitive in the solver. Then, each dictionary word can be expressed by the following map,
+
+```
+F: numberfy -> word
+F(2286526) = apple
+F(44376) = banana
+```
+
+It's possible that some words in the dictionary are already anagrams of each other, in which case we can map `numberfy` to a list of words.
 
 Step one is building the map.
+
