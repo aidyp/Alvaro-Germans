@@ -1,4 +1,4 @@
-# This snippet is for inspecting the map #
+# This snippet is for inspecting the map to find out some useless facts #
 
 import json
 
