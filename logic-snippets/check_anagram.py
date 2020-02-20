@@ -25,6 +25,39 @@ def check_anagram(word, anagram_map):
 	except:
 		return []
 
+def check_anagram_word_recursive(key, anagram_map, size):
+	# Idea is to solve it like the sudoku puzzle #
+	# So far it returns the _first_ solution
+	
+	out = []
+	# Limiting Condition #
+	if size == 1:
+		try:
+			return anagram_map[str(key)]
+		except:
+			# This isn't going to work #
+			return []
+	
+	for word_key in anagram_map:
+		# Check if a word in the map is present in the target word #
+		if key % int(word_key) == 0:			
+			# Take head and tail of the key #
+			head = int(word_key)
+			h_word = anagram_map[word_key]			
+			out.append(h_word)
+			tail = key / head
+			out.append(check_anagram_word_recursive(tail, anagram_map, size - 1))
+			if len(out[-1]) == 0:
+				# This is a failure, nothing was found #
+				out = []
+			else:
+				# We can return the head
+				return out
+			
+	
+				
+			
+
 def check_anagram_words(word, anagram_map, size):	
 	# Run when you have a guess of how many words an anagram resolves to #
 	key = numberfy(word)
@@ -44,6 +77,10 @@ def check_anagram_words(word, anagram_map, size):
 				pairs.append((left_word[1:], right_word[1:]))
 			except:
 				pass
+	
+	
+	# At the moment, it's doubling the list, should make sure a word isn't added more than once #
+	# Also how do I tell the best candidates? #
 	return pairs
 
 def print_results(results):
@@ -52,8 +89,8 @@ def print_results(results):
 
 def main():
 	anagram_map = load_map()
-	word = 'alvarogermans'
-	result = check_anagram_words(word, anagram_map, 2)
+	word = 'alvarogerman'
+	result = check_anagram_word_recursive(numberfy(word), anagram_map, 3)
 	print_results(result)
 	
 main()
