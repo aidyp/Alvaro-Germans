@@ -43,13 +43,19 @@ def make_map(word_list):
 
 def write_map(anagram_map):
 	# Write to disk as a JSON #
-	with open('../disk/anagram_map.json', 'w') as fd:
+	with open('../disk/scrabble_anagram_map.json', 'w') as fd:
 		json.dump(anagram_map, fd)
 	
 	return 0
 
+def to_lower(word_list):
+	for word in word_list:
+		word = word.lower()
+	return word_list
+
 def main():
 	words = load_words()
+	words = to_lower(words)
 	anagrams = make_map(words)
 	success = write_map(anagrams)
 	assert success == 0
