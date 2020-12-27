@@ -86,7 +86,7 @@ def print_results(results):
 
 def main():
 	anagram_map = load_map()
-	word = 'rats'
+	word = 'vlohpuar'
 	result = check_anagram_word_recursive(numberfy(word), anagram_map, 1)
 	print_results(result)
 
